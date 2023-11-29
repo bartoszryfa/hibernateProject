@@ -4,41 +4,43 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class Main {
+public class PrimaryKeyApp {
     public static void main(String[] args) {
-        // 1. Create a configuration object
-        Configuration conf = new Configuration();
 
-        // 2. Load the configuration file
+        Configuration conf = new Configuration();
         conf.configure("hibernate.cfg.xml");
 
-        // 3. Load the annotation
         conf.addAnnotatedClass(Employee.class);
         conf.addPackage("pl.bartoszryfa.hibernate.entity");
         conf.addPackage("pl.bartoszryfa.hibernateApp");
 
-        // 4. Create a SessionFactory object
         SessionFactory factory = conf.buildSessionFactory();
-
-        // 5. Obtain a session
         Session currentSession = factory.getCurrentSession();
 
-        // 6. Create an object
+        // Create three employee objects
         Employee employee = new Employee();
-        employee.setFirstname("Adam");
-        employee.setLastName("Nowakowski");
-        employee.setSalary(2000);
+        employee.setFirstname("Anna");
+        employee.setLastName("Mazurek");
+        employee.setSalary(10000);
 
-        // 6. Begin a transaction
+        Employee employee1 = new Employee();
+        employee1.setFirstname("Dominik");
+        employee1.setLastName("Król");
+        employee1.setSalary(8500);
+
+        Employee employee2 = new Employee();
+        employee2.setFirstname("Kamil");
+        employee2.setLastName("Ordon");
+        employee2.setSalary(3500);
+
         currentSession.beginTransaction();
 
-        // 8. Save employee to database
+        // Save employees to the database
         currentSession.persist(employee);
+        currentSession.persist(employee1);
+        currentSession.persist(employee2);
 
-        // 9. End the session, commit the transaction
         currentSession.getTransaction().commit();
-
-        // 10. Close the SessionFactory object
         factory.close();
     }
 }
